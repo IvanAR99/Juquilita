@@ -8,6 +8,7 @@ st.set_page_config(page_title="Comanda App", page_icon="🌮")
 st.title("🍽️ Registro de Órdenes - Juquilita")
 
 # 2. DEFINIR EL MENÚ (Diccionario: Platillo -> Precio)
+# ¡Aquí puedes editar tus platillos reales!
 menu = {
     "Empanadas": 35,
     "Tostadas": 35,
@@ -29,24 +30,31 @@ if 'orden_actual' not in st.session_state:
 # --- SECCIÓN A: AGREGAR PLATILLOS ---
 st.header("1. Nueva Orden")
 
+# Usamos columnas para que se vea más ordenado
 col1, col2 = st.columns(2)
+
 with col1:
     platillo = st.selectbox("Selecciona platillo", list(menu.keys()))
+    # Muestra el precio inmediatamente al seleccionar
+    precio_actual = menu[platillo]
+    st.info(f"💰 Precio: ${precio_actual}")
+
 with col2:
     cantidad = st.number_input("Cantidad", min_value=1, value=1)
 
-precio_unitario = menu[platillo]
-
+# Botón para agregar
 if st.button("Agregar a la Orden"):
-    # Agregamos un diccionario a la lista de la orden actual
+    # Calculamos el total de este ítem
+    total_item = precio_actual * cantidad
+    
     item = {
         "Platillo": platillo,
-        "Precio": precio_unitario,
+        "Precio": precio_actual,
         "Cantidad": cantidad,
-        "Total": precio_unitario * cantidad
+        "Total": total_item
     }
     st.session_state.orden_actual.append(item)
-    st.success(f"Agregado: {cantidad} x {platillo}")
+    st.success(f"Agregado: {cantidad} x {platillo} (${total_item})")
 
 # --- SECCIÓN B: VER ORDEN ACTUAL Y GUARDAR ---
 if len(st.session_state.orden_actual) > 0:
@@ -87,5 +95,4 @@ with st.expander("📊 Ver Historial de Ventas (Admin)"):
         st.dataframe(df_hist)
         st.write(f"Ventas Totales Históricas: ${df_hist['Total'].sum()}")
     else:
-
         st.info("Aún no hay ventas registradas.")
