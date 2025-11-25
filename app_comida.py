@@ -9,10 +9,14 @@ st.title("🍽️ Registro de Órdenes - Juquilita")
 
 # 2. DEFINIR EL MENÚ (Diccionario: Platillo -> Precio)
 menu = {
-    "Tacos": 15,
-    "Tortas": 45,
-    "Refresco": 20,
-    "Agua": 15
+    "Empanadas": 35,
+    "Tostadas": 35,
+    "Quesadillas pescado": 10,
+    "Quesadillas camarón": 15,
+    "Mojarra":80,
+    "Filete":25,
+    "Refrescos":25,
+    "Cerveza": 40
 }
 
 # Archivo donde se guardarán los datos
@@ -83,4 +87,5 @@ with st.expander("📊 Ver Historial de Ventas (Admin)"):
         st.dataframe(df_hist)
         st.write(f"Ventas Totales Históricas: ${df_hist['Total'].sum()}")
     else:
+
         st.info("Aún no hay ventas registradas.")
